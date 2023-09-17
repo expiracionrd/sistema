@@ -1,0 +1,98 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}Solicitudes{% endblock title %}
+
+{% block content %}
+    <div class="container" id="app">
+        <template v-if="open" >
+            <div 
+                class="bg-dark bg-opacity-50 d-flex justify-content-center align-items-center" 
+                style="position: fixed;height: 100vh; width: 100%; top:0px; left:0px;"
+                
+                >
+                <div class="bg-light p-4 rounded" 
+                    style="width: 95%;max-width: 500px;"
+                >
+                    <div class="d-flex justify-content-end">
+                        <button class="btn btn-danger" @click="open=false">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+                    </div>
+                    
+                    <form action="">
+                        <input type="number" name="id" value="1" class="d-none">
+
+                        <div class="form-group my-2">
+                            <label for="state">Estado de Solicitudes</label>
+                            <select name="" id="state" class="form-control">
+                                <option value="Pendiente">Pendiente</option>
+                                <option value="Trabajada">Trabajada</option>
+                                <option value="Completadas">Completadas</option>
+                            </select>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </template>
+
+
+        <h1 class="display-4 text-center my-2 mb-4">
+            Solicitudes
+            
+            <a href="{{ url_for('requests.create_request') }}" class="btn btn-primary fs-1 py-0">+</a>
+        </h1>
+        
+
+        <div>
+            <table class="table table-striped">
+                <thead>
+                    <th>ID</th>
+                    <th>Monto</th>
+                    <th>Descuento</th>
+                    <th>Cuotas</th>
+                    <th>Ubicacion</th>
+                    <th>Acciones</th>
+                </thead>
+
+                <tbody>
+                    {% for r in requests %}
+                        <tr>
+                            <td>{{ r.id }}</td>
+                            <td>{{ r.mount }}</td>
+                            <td>{{ r.discount }}</td>
+                            <td>{{ r.deadlines }}</td>
+                            <td>{{ r.location }}</td>
+                            <td>
+                                <button class="btn btn-warning"  @click="openModal()" >
+                                    <i class="fa-solid fa-pen"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    
+    </div>
+{% endblock content %}
+
+{% block script %}
+    <script type="module">
+        import { createApp } from 'https://unpkg.com/vue@3/dist/vue.esm-browser.js'
+    
+        createApp({
+            data() {
+                return {
+                    open: false,
+                }
+            },
+            methods: {
+                openModal(id_editing){
+                    this.open = true
+                }
+            }
+        }).mount('#app')
+    </script>
+    
+{% endblock script %}

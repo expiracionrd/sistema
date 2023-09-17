@@ -1,0 +1,82 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}Crear Solicitudes{% endblock title %}
+
+{% block content %}
+    <div class="container mt-3" style="max-width: 500px;">
+        <a href="{{ url_for('requests.requests_list') }}" class="btn btn-light shadow-sm border border-dark">Volver atras</a>
+        <h1 class="display-4 text-center">Crear Solicitudes</h1>
+    </div>
+
+
+    <form action="" class="container shadow rounded border bg-white p-4" style="max-width: 500px;" method="POST">
+        {{ form.csrf_token }}
+      
+        <div class="form-group my-2">
+            {{ form.name.label }}
+            {{ form.name(class="form-control", placeholder="Nombre...") }}
+            {% for e in form.name.errors %}
+                <div class="text-danger fw-bold">
+                    {{ e }}
+                </div>  
+            {% endfor %}
+        </div>
+
+        <div class="form-group my-2">
+            {{ form.mount.label }}
+            {{ form.mount(class="form-control", placeholder="Cantidad...") }}
+            {% for e in form.mount.errors %}
+                <div class="text-danger fw-bold">
+                    {{ e }}
+                </div>  
+            {% endfor %}
+        </div>
+
+        <div class="form-group my-2">
+            {{ form.reason.label }}
+            {{ form.reason(class="form-control", placeholder="Por qué requiere el prestamo?") }}
+            {% for e in form.reason.errors %}
+                <div class="text-danger fw-bold">
+                    {{ e }}
+                </div>  
+            {% endfor %}
+        </div>
+
+        <div class="form-group my-2 d-flex justify-content-between">
+            <div class="d-block w-100 me-2">
+                {{ form.discount.label }}
+                {{ form.discount(class="form-control", placeholder="Descuento...") }}
+                {% for e in form.discount.errors %}
+                    <div class="text-danger fw-bold">
+                        {{ e }}
+                    </div>  
+                {% endfor %}
+                
+            </div>
+            <div class="d-block w-100 ms-2">
+                {{form.deadlines.label}}
+                {{ form.deadlines(class="form-control", placeholder="Cuotas...") }}
+                {% for e in form.deadlines.errors %}
+                    <div class="text-danger fw-bold">
+                        {{ e }}
+                    </div>  
+                {% endfor %}
+            </div>
+        </div>
+
+
+        <div class="form-group my-2">
+            {{ form.location.label }}
+            {{ form.location(class="form-control", placeholder="Cantidad...") }}
+            {% for e in form.location.errors %}
+                <div class="text-danger fw-bold">
+                    {{ e }}
+                </div>  
+            {% endfor %}
+        </div>
+
+
+        <input type="submit" class="btn btn-primary w-100">
+    </form>
+
+{% endblock content %}
