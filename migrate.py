@@ -1,5 +1,5 @@
-from src.auth.models import * 
-from src.requests.models import *
+from src.apps.auth.models import * 
+from src.apps.requests.models import *
 
 from src.extensions.db import db
 

@@ -27,9 +27,9 @@ choices_location = [
 ]
 
 choices_state=[
-    ("Pendiente", "Pendiente"),
-    ("Trabajada", "Trabajada"),
-    ("Completadas", "Completadas")
+    ("pendiente", "Pendiente"),
+    ("proceso", "Proceso"),
+    ("completadas", "Completadas")
     
 ]
 

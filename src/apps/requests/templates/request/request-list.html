@@ -7,7 +7,7 @@
         <template v-if="open" >
             <div 
                 class="bg-dark bg-opacity-50 d-flex justify-content-center align-items-center" 
-                style="position: fixed;height: 100vh; width: 100%; top:0px; left:0px;"
+                style="position: fixed;height: 100vh; width: 100%; top:0px; left:0px; z-index: 9;"
                 
                 >
                 <div class="bg-light p-4 rounded" 
@@ -19,17 +19,17 @@
                         </button>
                     </div>
                     
-                    <form action="">
-                        <input type="number" name="id" value="1" class="d-none">
-
+                    <form method="POST" @submit.prevent="editRequest()">
                         <div class="form-group my-2">
                             <label for="state">Estado de Solicitudes</label>
-                            <select name="" id="state" class="form-control">
-                                <option value="Pendiente">Pendiente</option>
-                                <option value="Trabajada">Trabajada</option>
-                                <option value="Completadas">Completadas</option>
+                            <select id="state" class="form-control" v-model="state_model">
+                                <option value="pendiente">Pendiente</option>
+                                <option value="proceso">Proceso</option>
+                                <option value="completada">Completada</option>
                             </select>
                         </div>
+
+                        <input type="submit" class="btn btn-primary">
                     </form>
 
                 </div>
@@ -42,38 +42,230 @@
             
             <a href="{{ url_for('requests.create_request') }}" class="btn btn-primary fs-1 py-0">+</a>
         </h1>
-        
 
-        <div>
-            <table class="table table-striped">
-                <thead>
-                    <th>ID</th>
-                    <th>Monto</th>
-                    <th>Descuento</th>
-                    <th>Cuotas</th>
-                    <th>Ubicacion</th>
-                    <th>Acciones</th>
-                </thead>
 
-                <tbody>
-                    {% for r in requests %}
-                        <tr>
-                            <td>{{ r.id }}</td>
-                            <td>{{ r.mount }}</td>
-                            <td>{{ r.discount }}</td>
-                            <td>{{ r.deadlines }}</td>
-                            <td>{{ r.location }}</td>
-                            <td>
-                                <button class="btn btn-warning"  @click="openModal()" >
-                                    <i class="fa-solid fa-pen"></i>
-                                </button>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
+        <ul class="nav nav-tabs mb-0">
+            <template v-if="tabSelected=='pendiente'">
+                <li class="nav-item">
+                    <button class="nav-link text-dark active" @click="setTabSelected('pendiente')">Pendientes</button>
+                </li>    
+            </template>
+            <template v-else>
+                <li class="nav-item">
+                    <button class="nav-link text-dark" @click="setTabSelected('pendiente')">Pendientes</button>
+                </li>    
+            </template>
+
+
+
+            <template v-if="tabSelected=='proceso'">
+                <li class="nav-item">
+                    <button class="nav-link text-dark active" @click="setTabSelected('proceso')">En poceso</button>
+                </li>
+            </template>
+            <template v-else>
+                <li class="nav-item">
+                    <button class="nav-link text-dark" @click="setTabSelected('proceso')">En poceso</button>
+                </li>    
+            </template>
+
+
+            <template v-if="tabSelected=='completada'">
+                <li class="nav-item">
+                    <button class="nav-link text-dark active" @click="setTabSelected('completada')">Completadas</button>
+                </li>
+            </template>
+            <template v-else>
+                <li class="nav-item">
+                    <button class="nav-link text-dark" @click="setTabSelected('completada')">Completadas</button>
+                </li> 
+            </template>
+        </ul>
+
+        <template v-if="tabSelected=='pendiente'">
+            <div class="mt-0">
+                <h2 class="h1 text-center">Solucitudes Pendientes</h2>
+                <hr>
+
+                <template v-if="!loading">
+                    <div class="mt-4">
     
+                        <table class="table table-striped">
+                            <thead>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th>Monto</th>
+                                <th>Descuento</th>
+                                <th>Cuotas</th>
+                                <th>Ubicacion</th>
+                                <th>Acciones</th>
+                            </thead>
+            
+                            <tbody>   
+                                <template v-if="requestPendientes.length >= 1">
+                                    <tr v-for="rp in requestPendientes">
+                                        <td>[[ rp.id ]]</td>
+                                        <td>[[ rp.name ]]</td>
+                                        <td>[[ rp.mount ]]</td>
+                                        <td>[[ rp.discount ]]</td>
+                                        <td>[[ rp.deadlines ]]</td>
+                                        <td>[[ rp.location]]</td>
+                                        <td>
+                                            <button class="btn btn-warning" @click="openModal(rp.id, rp.state)">
+                                                <i class="fa-solid fa-pen"></i>
+                                            </button>
+                                            <button class="btn btn-danger" @click="deleteRequest(rp.id)">
+                                                <i class="fa-solid fa-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </template>
+                                <template v-else>
+                                    <tr>
+                                        <td colspan="7" class="text-center">
+                                            <b>
+                                                No hay Solicitudes en este estado
+                                            </b>
+                                        </td>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </div>
+                </template>
+                <template v-else>
+                    <div class="d-flex justify-content-center">
+                        <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                </template>
+            </div>            
+        </template>
+
+        <template v-if="tabSelected=='proceso'">
+            <div class="mt-0">
+                <h2 class="h1 text-center">Solucitudes En proceso</h2>
+                <hr>
+                <template v-if="!loading">
+                    <div class="mt-4">
+    
+                        <table class="table table-striped">
+                            <thead>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th>Monto</th>
+                                <th>Descuento</th>
+                                <th>Cuotas</th>
+                                <th>Ubicacion</th>
+                                <th>Acciones</th>
+                            </thead>
+            
+         
+                            <tbody>   
+                                <template v-if="requestProceso.length >= 1">
+                                    <tr v-for="rp in requestProceso">
+                                        <td>[[ rp.id ]]</td>
+                                        <td>[[ rp.name ]]</td>
+                                        <td>[[ rp.mount ]]</td>
+                                        <td>[[ rp.discount ]]</td>
+                                        <td>[[ rp.deadlines ]]</td>
+                                        <td>[[ rp.location]]</td>
+                                        <td>
+                                            <button class="btn btn-warning" @click="openModal(rp.id, rp.state)">
+                                                <i class="fa-solid fa-pen"></i>
+                                            </button>
+                                            <button class="btn btn-danger" @click="deleteRequest(rp.id)">
+                                                <i class="fa-solid fa-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </template>
+                                <template v-else>
+                                    <tr>
+                                        <td colspan="7" class="text-center">
+                                            <b>
+                                                No hay Solicitudes en este estado
+                                            </b>
+                                        </td>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </div>
+                </template>
+                <template v-else>
+                    <div class="d-flex justify-content-center">
+                        <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                </template>
+            </div>
+    
+        </template>
+
+        <template v-if="tabSelected=='completada'">
+            <div class="mt-0">
+                <h2 class="h1 text-center">Solucitudes Completadas</h2>
+                <hr>
+                <template v-if="!loading">
+                    <div class="mt-4">
+    
+                        <table class="table table-striped">
+                            <thead>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th>Monto</th>
+                                <th>Descuento</th>
+                                <th>Cuotas</th>
+                                <th>Ubicacion</th>
+                                <th>Acciones</th>
+                            </thead>
+            
+                        
+                            <tbody>   
+                                <template v-if="requestCompletados.length >= 1">
+                                    <tr v-for="rc in requestCompletados">
+                                        <td>[[ rc.id ]]</td>
+                                        <td>[[ rc.name ]]</td>
+                                        <td>[[ rc.mount ]]</td>
+                                        <td>[[ rc.discount ]]</td>
+                                        <td>[[ rc.deadlines ]]</td>
+                                        <td>[[ rc.location]]</td>
+                                        <td>
+                                            <button class="btn btn-warning" @click="openModal(rc.id, rc.state)">
+                                                <i class="fa-solid fa-pen"></i>
+                                            </button>
+    
+                                            <button class="btn btn-danger" @click="deleteRequest(rc.id)">
+                                                <i class="fa-solid fa-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </template>
+                                <template v-else>
+                                    <tr>
+                                        <td colspan="7" class="text-center">
+                                            <b>
+                                                No hay Solicitudes en este estado
+                                            </b>
+                                        </td>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </div>
+                </template>
+                <template v-else>
+                    <div class="d-flex justify-content-center">
+                        <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </template>
     </div>
 {% endblock content %}
 
@@ -82,14 +274,81 @@
         import { createApp } from 'https://unpkg.com/vue@3/dist/vue.esm-browser.js'
     
         createApp({
+            async mounted() {
+                await this.fetchRequests()
+            },
+            delimiters:["[[", "]]"],
             data() {
                 return {
+                    loading:true,
+                    is_editing: false,
+                    state_model: '',
+                    requestPendientes: [],
+                    requestProceso:[],
+                    requestCompletados:[],
                     open: false,
+                    tabSelected: "pendiente"
                 }
             },
             methods: {
-                openModal(id_editing){
+                openModal(id_editing, state_req){
+                    this.is_editing = id_editing
+                    this.state_model = state_req
                     this.open = true
+                },
+                async fetchRequests(){
+                    this.loading = true
+                    let res = await fetch("../api/get-requests")
+                    let data = await res.json()
+
+                    console.log(data)
+
+                    this.requestPendientes = await data.pendientes
+                    this.requestProceso = await data.proceso
+                    this.requestCompletados = await data.completadas
+                    this.loading = false
+                },
+                async editRequest(){
+                    
+                    let req_data = {
+                        id: this.is_editing,
+                        state: this.state_model
+                    }
+
+                    let res = await fetch("../api/edit-requests",{
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        method:"POST",
+                        body:JSON.stringify(req_data)
+                    }) 
+                    let data = await res.json()
+
+                    console.log(data)
+                    await this.fetchRequests()
+
+                    this.open=false
+                },   
+                async deleteRequest(id){
+                    let req_template = {
+                        id: id
+                    }
+
+                    let res = await fetch("../api/delete-requests",{       
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        method: "POST",
+                        body: JSON.stringify(req_template)
+                    })
+                    let data = await res.json()
+
+                    console.log(data)
+
+                    await this.fetchRequests()
+                },
+                setTabSelected(state){
+                    this.tabSelected = state
                 }
             }
         }).mount('#app')
