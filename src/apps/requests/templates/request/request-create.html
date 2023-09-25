@@ -3,13 +3,24 @@
 {% block title %}Crear Solicitudes{% endblock title %}
 
 {% block content %}
+{% include "components/navbar.html" %}
+
     <div class="container mt-3" style="max-width: 500px;">
-        <a href="{{ url_for('requests.requests_list') }}" class="btn btn-light shadow-sm border border-dark">Volver atras</a>
         <h1 class="display-4 text-center">Crear Solicitudes</h1>
     </div>
 
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul style="list-style: none; max-width: 500px;" class="container">
+                {% for message in messages %}
+                    <li class="alert alert-info">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
 
-    <form action="" class="container shadow rounded border bg-white p-4" style="max-width: 500px;" method="POST">
+
+    <form action="" class="container shadow rounded border bg-white p-4" style="max-width: 500px;" method="POST">      
         {{ form.csrf_token }}
       
         <div class="form-group my-2">
@@ -78,5 +89,6 @@
 
         <input type="submit" class="btn btn-primary w-100">
     </form>
+
 
 {% endblock content %}

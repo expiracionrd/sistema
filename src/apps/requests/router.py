@@ -1,5 +1,5 @@
-from flask import Blueprint, request, redirect, url_for
-from flask import render_template, request
+from flask import Blueprint, redirect, url_for
+from flask import render_template, request, flash
 from flask_login import login_required
 from .forms import RequestsForm
 from .models import Requests
@@ -8,6 +8,11 @@ from .schemas import RequestOut
 
 
 bp = Blueprint("requests", __name__, template_folder="./templates")
+
+@bp.route("/")
+@login_required
+def home():
+    return redirect(url_for('requests.create_request'))
 
 
 @bp.route("/requests")
@@ -46,8 +51,16 @@ def create_request():
 
             db.session.add(create)
             db.session.commit()
+
+
+
+
+            flash("Solicitud enviada", "info")
+            form = RequestsForm({})
             
-            return redirect(url_for('requests.requests_list'))
+            return render_template("request/request-create.html", form=form)
+
+
 
         return render_template("request/request-create.html", form=form)
 

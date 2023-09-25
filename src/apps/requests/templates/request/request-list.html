@@ -3,6 +3,9 @@
 {% block title %}Solicitudes{% endblock title %}
 
 {% block content %}
+
+    {% include "components/navbar.html" %}
+
     <div class="container" id="app">
         <template v-if="open" >
             <div 
@@ -19,18 +22,33 @@
                         </button>
                     </div>
                     
-                    <form method="POST" @submit.prevent="editRequest()">
-                        <div class="form-group my-2">
-                            <label for="state">Estado de Solicitudes</label>
-                            <select id="state" class="form-control" v-model="state_model">
-                                <option value="pendiente">Pendiente</option>
-                                <option value="proceso">Proceso</option>
-                                <option value="completada">Completada</option>
-                            </select>
-                        </div>
+                    <template v-if="deleteId==false">
+                        <form method="POST" @submit.prevent="editRequest()">
+                            <div class="form-group my-2">
+                                <label for="state">Estado de Solicitudes</label>
+                                <select id="state" class="form-control" v-model="state_model">
+                                    <option value="pendiente">Pendiente</option>
+                                    <option value="proceso">Proceso</option>
+                                    <option value="completada">Completada</option>
+                                </select>
+                            </div>
+    
+                            <input type="submit" class="btn btn-primary">
+                        </form>
+                    </template>
+                    <template v-else>
+                        <div>
+                            <h4>Estas seguro que quieres eliminar</h4>
 
-                        <input type="submit" class="btn btn-primary">
-                    </form>
+                            <div class="d-flex w-100 justify-content-center align-items-center">
+                                <button class="btn d-block w-100 btn-danger me-2">
+                                    Eliminar
+                                </button>
+
+                                <button class="btn d-block w-100 btn-warning ms-2" @click="()=>{open=false; deleteId=false;}">Cancelar</button>
+                            </div>
+                        </div>
+                    </template>
 
                 </div>
             </div>
@@ -238,7 +256,7 @@
                                                 <i class="fa-solid fa-pen"></i>
                                             </button>
     
-                                            <button class="btn btn-danger" @click="deleteRequest(rc.id)">
+                                            <button class="btn btn-danger" @click="openModalDelete(rc.id)">
                                                 <i class="fa-solid fa-trash"></i>
                                             </button>
                                         </td>
@@ -287,6 +305,7 @@
                     requestProceso:[],
                     requestCompletados:[],
                     open: false,
+                    deleteId:false,
                     tabSelected: "pendiente"
                 }
             },
@@ -346,7 +365,9 @@
                     console.log(data)
 
                     await this.fetchRequests()
+
                 },
+
                 setTabSelected(state){
                     this.tabSelected = state
                 }
