@@ -23,7 +23,6 @@ choices_location = [
     ("Norte", "Norte"),
     ("Sur", "Sur"),
     ("Este", "Este"),
-    ("Oeste", "Oeste")
 ]
 
 choices_state=[

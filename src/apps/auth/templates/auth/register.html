@@ -1,10 +1,10 @@
 {% extends 'layouts/base.html' %}
 
-{% block title %}Registrate{% endblock title %}
+{% block title %}Regístrate{% endblock title %}
 
 {% block content %}
     <form action="" method="POST" class="container border rounded shadow p-4 pt-2 mt-5 bg-white" style="max-width: 500px;">
-        <h1 class="display-4 text-center">Registrate</h1>
+        <h1 class="display-4 text-center">Regístrate</h1>
         {{ form.csrf_token }}
 
         <div class="form-group my-3">
@@ -45,7 +45,7 @@
 
         <div class="form-group my-3">
             {{ form.confirm.label }}
-            {{ form.confirm(class="form-control", placeholder="confirmar contraseña...") }}
+            {{ form.confirm(class="form-control", placeholder="Confirmar contraseña...") }}
         
             {% if form.confirm.errors %}
                 {% for e in form.confirm.errors %}

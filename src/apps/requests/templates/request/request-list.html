@@ -25,7 +25,7 @@
                     <template v-if="deleteId==false">
                         <form method="POST" @submit.prevent="editRequest()">
                             <div class="form-group my-2">
-                                <label for="state">Estado de Solicitudes</label>
+                                <label for="state">Estado de solicitudes</label>
                                 <select id="state" class="form-control" v-model="state_model">
                                     <option value="pendiente">Pendiente</option>
                                     <option value="proceso">Proceso</option>
@@ -38,7 +38,7 @@
                     </template>
                     <template v-else>
                         <div>
-                            <h4>Estas seguro que quieres eliminar</h4>
+                            <h4>¿Estás seguro que quieres eliminar?</h4>
 
                             <div class="d-flex w-100 justify-content-center align-items-center">
                                 <button class="btn d-block w-100 btn-danger me-2">
@@ -78,12 +78,12 @@
 
             <template v-if="tabSelected=='proceso'">
                 <li class="nav-item">
-                    <button class="nav-link text-dark active" @click="setTabSelected('proceso')">En poceso</button>
+                    <button class="nav-link text-dark active" @click="setTabSelected('proceso')">En proceso</button>
                 </li>
             </template>
             <template v-else>
                 <li class="nav-item">
-                    <button class="nav-link text-dark" @click="setTabSelected('proceso')">En poceso</button>
+                    <button class="nav-link text-dark" @click="setTabSelected('proceso')">En proceso</button>
                 </li>    
             </template>
 
@@ -102,7 +102,7 @@
 
         <template v-if="tabSelected=='pendiente'">
             <div class="mt-0">
-                <h2 class="h1 text-center">Solucitudes Pendientes</h2>
+                <h2 class="h1 text-center">Solicitudes pendientes</h2>
                 <hr>
 
                 <template v-if="!loading">
@@ -113,8 +113,8 @@
                                 <th>ID</th>
                                 <th>Nombre</th>
                                 <th>Monto</th>
-                                <th>Descuento</th>
-                                <th>Cuotas</th>
+                                <th>Forma de pago</th>
+                                <th>Plazo en cuotas</th>
                                 <th>Ubicacion</th>
                                 <th>Acciones</th>
                             </thead>
@@ -142,7 +142,7 @@
                                     <tr>
                                         <td colspan="7" class="text-center">
                                             <b>
-                                                No hay Solicitudes en este estado
+                                                No hay solicitudes en este estado.
                                             </b>
                                         </td>
                                     </tr>
@@ -163,7 +163,7 @@
 
         <template v-if="tabSelected=='proceso'">
             <div class="mt-0">
-                <h2 class="h1 text-center">Solucitudes En proceso</h2>
+                <h2 class="h1 text-center">Solicitudes en proceso</h2>
                 <hr>
                 <template v-if="!loading">
                     <div class="mt-4">
@@ -173,8 +173,8 @@
                                 <th>ID</th>
                                 <th>Nombre</th>
                                 <th>Monto</th>
-                                <th>Descuento</th>
-                                <th>Cuotas</th>
+                                <th>Forma de pago</th>
+                                <th>Plazo de cuotas</th>
                                 <th>Ubicacion</th>
                                 <th>Acciones</th>
                             </thead>
@@ -203,7 +203,7 @@
                                     <tr>
                                         <td colspan="7" class="text-center">
                                             <b>
-                                                No hay Solicitudes en este estado
+                                                No hay solicitudes en este estado.
                                             </b>
                                         </td>
                                     </tr>
@@ -225,7 +225,7 @@
 
         <template v-if="tabSelected=='completada'">
             <div class="mt-0">
-                <h2 class="h1 text-center">Solucitudes Completadas</h2>
+                <h2 class="h1 text-center">Solicitudes completadas</h2>
                 <hr>
                 <template v-if="!loading">
                     <div class="mt-4">
@@ -235,8 +235,8 @@
                                 <th>ID</th>
                                 <th>Nombre</th>
                                 <th>Monto</th>
-                                <th>Descuento</th>
-                                <th>Cuotas</th>
+                                <th>Forma de pago</th>
+                                <th>Plazo de cuotas</th>
                                 <th>Ubicacion</th>
                                 <th>Acciones</th>
                             </thead>
@@ -266,7 +266,7 @@
                                     <tr>
                                         <td colspan="7" class="text-center">
                                             <b>
-                                                No hay Solicitudes en este estado
+                                                No hay solicitudes en este estado.
                                             </b>
                                         </td>
                                     </tr>

@@ -24,18 +24,18 @@ def Login():
         password = data.get("password", None)
          
         if username == None or password == None:
-            flash("The user or password are incorrect. Try Again", category="Error") 
+            flash("El usuario o la contraseña son incorrectas. Inténtalo de nuevo.", category="Error") 
         
         
         
         user_by_user_name = User.query.filter_by(username=username).one_or_none()
     
         if user_by_user_name == None:
-            flash("The user or password are incorrect. Try Again", category="Error") 
+            flash("El usuario o la contraseña son incorrectas. Inténtalo de nuevo.", category="Error") 
             return render_template("auth/login.html")
         
         if not check_password_hash(user_by_user_name.password, password):
-            flash("The user or password are incorrect. Try Again", category="Error") 
+            flash("El usuario o la contraseña son incorrectas. Inténtalo de nuevo.", category="Error") 
             return render_template("auth/login.html")
     
         
