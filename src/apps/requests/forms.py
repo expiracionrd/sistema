@@ -13,7 +13,7 @@ choices_discount = [
 
 def choices_deadline_data():
     choices_deadline = []
-    
+
     for i in range(1, 73):
         choices_deadline.append(i)
     
@@ -40,7 +40,7 @@ class RequestsForm(FlaskForm):
     mount = fields.IntegerField(label="Monto", 
         validators=[
             DataRequired("Este campo es requerido"), 
-            NumberRange(min=1, message="El Monto no puede ser negativo ni igual a cero")
+            NumberRange(min=1, message="El capital solicitado no puede ser menor o igual a cero.")
         ] 
     )
     
@@ -49,7 +49,7 @@ class RequestsForm(FlaskForm):
     )
     
     discount = fields.SelectField(
-        label="Descuento", 
+        label="Forma de pago", 
         validators=[
             DataRequired("Este campo es requerido")
         ],
@@ -57,7 +57,7 @@ class RequestsForm(FlaskForm):
     )
     
     deadlines = fields.SelectField(
-        label="Cuotas", 
+        label="Plazos o cantidad de cuotas", 
         validators=[
             DataRequired("Este campo es requerido")
         ], 
@@ -65,7 +65,7 @@ class RequestsForm(FlaskForm):
     )
     
     location = fields.SelectField(
-        label="Ubicacion", 
+        label="Territorio", 
         validators=[
             DataRequired("Este campo es requerido")
         ], 

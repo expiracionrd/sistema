@@ -25,7 +25,7 @@
       
         <div class="form-group my-2">
             {{ form.name.label }}
-            {{ form.name(class="form-control", placeholder="Nombre...") }}
+            {{ form.name(class="form-control", placeholder="Nombre completo del solicitante") }}
             {% for e in form.name.errors %}
                 <div class="text-danger fw-bold">
                     {{ e }}
@@ -35,7 +35,7 @@
 
         <div class="form-group my-2">
             {{ form.mount.label }}
-            {{ form.mount(class="form-control", placeholder="Cantidad...") }}
+            {{ form.mount(class="form-control", placeholder="Cantidad") }}
             {% for e in form.mount.errors %}
                 <div class="text-danger fw-bold">
                     {{ e }}
@@ -45,7 +45,7 @@
 
         <div class="form-group my-2">
             {{ form.reason.label }}
-            {{ form.reason(class="form-control", placeholder="Por qué requiere el prestamo?") }}
+            {{ form.reason(class="form-control", placeholder="¿Por qué requiere el prestamo?") }}
             {% for e in form.reason.errors %}
                 <div class="text-danger fw-bold">
                     {{ e }}
@@ -56,7 +56,7 @@
         <div class="form-group my-2 d-flex justify-content-between">
             <div class="d-block w-100 me-2">
                 {{ form.discount.label }}
-                {{ form.discount(class="form-control", placeholder="Descuento...") }}
+                {{ form.discount(class="form-control", placeholder="Forma de pago...") }}
                 {% for e in form.discount.errors %}
                     <div class="text-danger fw-bold">
                         {{ e }}
@@ -66,7 +66,7 @@
             </div>
             <div class="d-block w-100 ms-2">
                 {{form.deadlines.label}}
-                {{ form.deadlines(class="form-control", placeholder="Cuotas...") }}
+                {{ form.deadlines(class="form-control", placeholder="Plazo o cuotas") }}
                 {% for e in form.deadlines.errors %}
                     <div class="text-danger fw-bold">
                         {{ e }}
