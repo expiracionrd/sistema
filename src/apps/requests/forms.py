@@ -5,9 +5,9 @@ from wtforms.validators import DataRequired, Length, NumberRange
 
 
 choices_discount = [
-    ("Quincenal", "Quincenal"),
-    ("Mensual", "Mensual"),
-    ("Comisión", "Comisión")
+    ("quincenal", "Quincenal"),
+    ("mensual", "Mensual"),
+    ("comision", "Comisión")
 ]
 
 
